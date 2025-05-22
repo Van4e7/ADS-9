@@ -1,11 +1,11 @@
 // Copyright 2022 NNTU-CS
-#include "tree.h"
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <utility>
 #include <vector>
+#include "tree.h"
 
 template<typename Func, typename... Args>
 std::pair<std::vector<std::vector<char>>,
