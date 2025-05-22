@@ -1,11 +1,11 @@
 // Copyright 2022 NNTU-CS
 #include  "tree.h"
-#include <memory>
+#include  <locale>
+#include  <memory>
 #include  <iostream>
 #include  <fstream>
-#include  <locale>
 #include  <cstdlib>
-#include <vector>
+#include  <vector>
 
 PMTree::PMTree(const std::vector<char>& elements) {
   if (elements.empty()) {
@@ -21,7 +21,7 @@ PMTree::PMTree(const std::vector<char>& elements) {
   buildTree(root, elements);
 }
 
-void PMTree::buildTree(std::shared_ptr<Node> parent, 
+void PMTree::buildTree(std::shared_ptr<Node> parent,
   const std::vector<char>& remain) {
   if (remain.empty()) {
     return;
@@ -39,7 +39,7 @@ void PMTree::buildTree(std::shared_ptr<Node> parent,
   }
 }
 
-void collectPermutations(const std::shared_ptr<PMTree::Node>& node, 
+void collectPermutations(const std::shared_ptr<PMTree::Node>& node,
   std::vector<char>& current, std::vector<std::vector<char>>& result) {
   if (node->value != '\0') {
     current.push_back(node->value);
@@ -76,7 +76,7 @@ std::vector<char> getPerm1(const PMTree& tree, int num) {
   return all_perms[num - 1];
 }
 
-std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node, 
+std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node,
   int& remaining) {
   if (node->children.empty()) {
     if (--remaining == 0) {
