@@ -21,39 +21,40 @@ PMTree::PMTree(const std::vector<char>& elements) {
   buildTree(root, elements);
 }
 
-void PMTree::buildTree(std::shared_ptr<Node> parent, const std::vector<char>& remain) {
-  if (remaining.empty()) {
+void PMTree::buildTree(std::shared_ptr<Node> parent, 
+  const std::vector<char>& remain) {
+  if (remain.empty()) {
     return;
   }
-  for (size_t i = 0; i < remaining.size(); ++i) {
-    auto child = std::make_shared<Node>(remaining[i]);
+  for (size_t i = 0; i < remain.size(); ++i) {
+    auto child = std::make_shared<Node>(remain[i]);
     parent->children.push_back(child);
     std::vector<char> new_remaining;
-    for (size_t j = 0; j < remaining.size(); ++j) {
+    for (size_t j = 0; j < remain.size(); ++j) {
       if (j != i) {
-        new_remaining.push_back(remaining[j]);
+        new_remaining.push_back(remain[j]);
       }
     }
     buildTree(child, new_remaining);
   }
 }
 
-void collectPermutations(const std::shared_ptr<PMTree::Node>& node, std::vector<char>& curr,
-  std::vector<std::vector<char>>& res) {
+void collectPermutations(const std::shared_ptr<PMTree::Node>& node, 
+  std::vector<char>& current, std::vector<std::vector<char>>& result) {
   if (node->value != '\0') {
-    curr.push_back(node->value);
+    current.push_back(node->value);
   }
   if (node->children.empty()) {
-    if (!curr.empty()) {
-      res.push_back(curr);
+    if (!current.empty()) {
+      result.push_back(current);
     }
   } else {
     for (const auto& child : node->children) {
-      collectPermutations(child, curr, res);
+      collectPermutations(child, current, result);
     }
   }
   if (node->value != '\0') {
-    curr.pop_back();
+    current.pop_back();
   }
 }
 
@@ -75,15 +76,16 @@ std::vector<char> getPerm1(const PMTree& tree, int num) {
   return all_perms[num - 1];
 }
 
-std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node, int& remain) {
+std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node, 
+  int& remaining) {
   if (node->children.empty()) {
-    if (--remain == 0) {
+    if (--remaining == 0) {
       return { node->value };
     }
     return {};
   }
   for (const auto& child : node->children) {
-    auto result = getPerm2Helper(child, remain);
+    auto result = getPerm2Helper(child, remaining);
     if (!result.empty()) {
       if (node->value != '\0') {
         result.insert(result.begin(), node->value);
