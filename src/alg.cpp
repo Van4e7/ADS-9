@@ -1,10 +1,11 @@
 // Copyright 2022 NNTU-CS
+#include  "tree.h"
+#include <memory>
 #include  <iostream>
 #include  <fstream>
 #include  <locale>
 #include  <cstdlib>
 #include <vector>
-#include  "tree.h"
 
 PMTree::PMTree(const std::vector<char>& elements) {
   if (elements.empty()) {
@@ -16,11 +17,11 @@ PMTree::PMTree(const std::vector<char>& elements) {
   for (size_t i = 1; i <= elements.size(); ++i) {
     total_permutations *= i;
   }
-  root = std::make_shared<Node>('\0'); 
+  root = std::make_shared<Node>('\0');
   buildTree(root, elements);
 }
 
-void PMTree::buildTree(std::shared_ptr<Node> parent, const std::vector<char>& remaining) {
+void PMTree::buildTree(std::shared_ptr<Node> parent, const std::vector<char>& remain) {
   if (remaining.empty()) {
     return;
   }
@@ -37,22 +38,22 @@ void PMTree::buildTree(std::shared_ptr<Node> parent, const std::vector<char>& re
   }
 }
 
-void collectPermutations(const std::shared_ptr<PMTree::Node>& node, std::vector<char>& current,
-  std::vector<std::vector<char>>& result) {
+void collectPermutations(const std::shared_ptr<PMTree::Node>& node, std::vector<char>& curr,
+  std::vector<std::vector<char>>& res) {
   if (node->value != '\0') {
-    current.push_back(node->value);
+    curr.push_back(node->value);
   }
   if (node->children.empty()) {
-    if (!current.empty()) {
-      result.push_back(current);
+    if (!curr.empty()) {
+      res.push_back(curr);
     }
   } else {
     for (const auto& child : node->children) {
-      collectPermutations(child, current, result);
+      collectPermutations(child, curr, res);
     }
   }
   if (node->value != '\0') {
-    current.pop_back();
+    curr.pop_back();
   }
 }
 
@@ -74,15 +75,15 @@ std::vector<char> getPerm1(const PMTree& tree, int num) {
   return all_perms[num - 1];
 }
 
-std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node, int& remaining) {
+std::vector<char> getPerm2Helper(const std::shared_ptr<PMTree::Node>& node, int& remain) {
   if (node->children.empty()) {
-    if (--remaining == 0) {
+    if (--remain == 0) {
       return { node->value };
     }
     return {};
   }
   for (const auto& child : node->children) {
-    auto result = getPerm2Helper(child, remaining);
+    auto result = getPerm2Helper(child, remain);
     if (!result.empty()) {
       if (node->value != '\0') {
         result.insert(result.begin(), node->value);
@@ -98,7 +99,7 @@ std::vector<char> getPerm2(const PMTree& tree, int num) {
     return {};
   }
   int remaining = num;
-  return getPerm2Helper(tree.getRoot(), remaining);
+  return getPerm2Helper(tree.getRoot(), remain);
 }
 
 std::vector<char> generateAlphabet(int n) {
