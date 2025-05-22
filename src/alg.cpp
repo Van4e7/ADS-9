@@ -1,10 +1,10 @@
 // Copyright 2022 NNTU-CS
 #include  "tree.h"
+#include  <cstdlib>
+#include  <fstream>
+#include  <iostream>
 #include  <locale>
 #include  <memory>
-#include  <iostream>
-#include  <fstream>
-#include  <cstdlib>
 #include  <vector>
 
 PMTree::PMTree(const std::vector<char>& elements) {
@@ -101,7 +101,7 @@ std::vector<char> getPerm2(const PMTree& tree, int num) {
     return {};
   }
   int remaining = num;
-  return getPerm2Helper(tree.getRoot(), remain);
+  return getPerm2Helper(tree.getRoot(), remaining);
 }
 
 std::vector<char> generateAlphabet(int n) {
